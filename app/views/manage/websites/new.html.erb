@@ -1,7 +1,7 @@
 <!-- app/views/manage/websites/new.html.erb -->
 <h1>Create Your Website</h1>
 
-<%= form_with model: [:manage, @website], local: true, class: 'row g-4' do |form| %>
+<%= form_with model: @website, local: true, class: 'row g-4' do |form| %>
   <% if @website.errors.any? %>
     <div class="col-12">
       <div class="alert alert-danger">
@@ -50,7 +50,7 @@
 
   <div class="col-12">
     <%= form.submit 'Create Website', class: 'btn btn-primary btn-lg' %>
-    <%= link_to 'Cancel', manage_root_path, class: 'btn btn-secondary' %>
+    <%= link_to 'Cancel', root_path, class: 'btn btn-secondary' %>
   </div>
 <% end %>
 

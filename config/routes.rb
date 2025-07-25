@@ -17,6 +17,25 @@ Rails.application.routes.draw do
       root 'dashboard#index', as: 'manage_root'
       resources :users, only: [:index, :show, :edit, :update]
       resources :reports
+
+      # Website builder routes
+      resources :websites do
+        member do
+          get :preview
+          patch :publish
+        end
+
+        collection do
+          get :customize
+          patch :update_customizations
+        end
+
+        resources :pages, controller: 'website_pages', only: [:show, :edit, :update]
+      end
+
+      # Public preview routes for websites (different name to avoid conflict)
+      get '/preview/:slug(/:page)', to: 'websites#preview',
+          as: 'public_preview_website', constraints: { page: /home|about|services|contact/ }
     end
   end
 

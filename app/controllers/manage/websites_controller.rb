@@ -6,9 +6,9 @@ class Manage::WebsitesController < Manage::BaseController
   def index
     @website = current_user.website
     if @website
-      redirect_to manage_website_path(@website)
+      redirect_to website_path(@website)
     else
-      redirect_to new_manage_website_path
+      redirect_to new_website_path
     end
   end
 
@@ -26,7 +26,7 @@ class Manage::WebsitesController < Manage::BaseController
     @website = current_user.build_website(website_params)
 
     if @website.save
-      redirect_to manage_website_path(@website),
+      redirect_to website_path(@website),
                   notice: 'Website created successfully! Start customizing your pages.'
     else
       @themes = Theme.active.order(:name)
@@ -40,7 +40,7 @@ class Manage::WebsitesController < Manage::BaseController
 
   def update
     if @website.update(website_params)
-      redirect_to manage_website_path(@website), notice: 'Website updated successfully!'
+      redirect_to website_path(@website), notice: 'Website updated successfully!'
     else
       @themes = Theme.active.order(:name)
       render :edit, status: :unprocessable_entity
@@ -49,7 +49,7 @@ class Manage::WebsitesController < Manage::BaseController
 
   def destroy
     @website.destroy
-    redirect_to manage_root_path, notice: 'Website deleted successfully.'
+    redirect_to root_path, notice: 'Website deleted successfully.'
   end
 
   def preview
@@ -66,7 +66,7 @@ class Manage::WebsitesController < Manage::BaseController
 
   def customize
     @website = current_user.website
-    redirect_to new_manage_website_path unless @website
+    redirect_to new_website_path unless @website
 
     @customizations = @website.customizations || {}
     @css_variables = @website.theme.css_variables || {}
@@ -77,7 +77,7 @@ class Manage::WebsitesController < Manage::BaseController
 
     if @website.update(customizations: customization_params)
       respond_to do |format|
-        format.html { redirect_to customize_manage_websites_path, notice: 'Customizations saved successfully!' }
+        format.html { redirect_to customize_websites_path, notice: 'Customizations saved successfully!' }
         format.json { render json: { status: 'success', message: 'Customizations saved!' } }
       end
     else
@@ -95,9 +95,9 @@ class Manage::WebsitesController < Manage::BaseController
 
     if @website.update(published: !@website.published?)
       status = @website.published? ? 'published' : 'unpublished'
-      redirect_to manage_website_path(@website), notice: "Website #{status} successfully!"
+      redirect_to website_path(@website), notice: "Website #{status} successfully!"
     else
-      redirect_to manage_website_path(@website), alert: 'Failed to update website status.'
+      redirect_to website_path(@website), alert: 'Failed to update website status.'
     end
   end
 
@@ -107,10 +107,10 @@ class Manage::WebsitesController < Manage::BaseController
 
     if new_theme_id.present? && Theme.active.exists?(new_theme_id)
       @website.update(theme_id: new_theme_id, customizations: {})
-      redirect_to customize_manage_websites_path,
+      redirect_to customize_websites_path,
                   notice: 'Theme changed successfully! Customize your new theme below.'
     else
-      redirect_to manage_website_path(@website), alert: 'Invalid theme selected.'
+      redirect_to website_path(@website), alert: 'Invalid theme selected.'
     end
   end
 
@@ -118,12 +118,12 @@ class Manage::WebsitesController < Manage::BaseController
 
   def set_website
     @website = current_user.website
-    redirect_to new_manage_website_path unless @website
+    redirect_to new_website_path unless @website
   end
 
   def check_website_limit
     if current_user.has_website?
-      redirect_to manage_website_path(current_user.website),
+      redirect_to website_path(current_user.website),
                   alert: 'You can only create one website per account.'
     end
   end

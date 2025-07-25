@@ -11,12 +11,12 @@
     </p>
   </div>
   <div>
-    <%= link_to 'Preview', preview_manage_website_path(@website),
+    <%= link_to 'Preview', preview_website_path(@website),
                 class: 'btn btn-info', target: '_blank' %>
-    <%= link_to 'Customize', customize_manage_websites_path,
+    <%= link_to 'Customize', customize_websites_path,
                 class: 'btn btn-primary' %>
     <%= link_to @website.published? ? 'Unpublish' : 'Publish',
-                publish_manage_website_path(@website),
+                publish_website_path(@website),
                 method: :patch,
                 class: "btn #{ @website.published? ? 'btn-warning' : 'btn-success'}" %>
   </div>
@@ -37,9 +37,9 @@
                 <small class="text-muted">/<%= page.page_type %></small>
               </div>
               <div>
-                <%= link_to 'Edit Content', edit_manage_website_page_path(@website, page),
+                <%= link_to 'Edit Content', edit_website_page_path(@website, page),
                             class: 'btn btn-sm btn-outline-primary' %>
-                <%= link_to 'Preview', preview_manage_website_path(@website, page: page.page_type),
+                <%= link_to 'Preview', preview_website_path(@website, page: page.page_type),
                             class: 'btn btn-sm btn-outline-info', target: '_blank' %>
               </div>
             </div>
@@ -56,9 +56,9 @@
       </div>
       <div class="card-body">
         <div class="d-grid gap-2">
-          <%= link_to 'Edit Website Settings', edit_manage_website_path(@website),
+          <%= link_to 'Edit Website Settings', edit_website_path(@website),
                       class: 'btn btn-outline-secondary' %>
-          <%= link_to 'Customize Theme', customize_manage_websites_path,
+          <%= link_to 'Customize Theme', customize_websites_path,
                       class: 'btn btn-outline-primary' %>
           <%= link_to 'View Live Site', @website.preview_url,
                       class: 'btn btn-success', target: '_blank' if @website.published? %>

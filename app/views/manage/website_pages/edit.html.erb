@@ -1,7 +1,6 @@
-<!-- app/views/manage/website_pages/edit.html.erb -->
 <h1>Edit <%= @page.title %> Page</h1>
 
-<%= form_with model: [:manage, @website, @page], local: true do |form| %>
+<%= form_with model: [@website, @page], url: website_page_path(@website, @page), local: true do |form| %>
   <% if @page.errors.any? %>
     <div class="alert alert-danger">
       <h6>Please fix the following errors:</h6>
@@ -56,6 +55,11 @@
             <div id="services-container">
               <% (@page.merged_content['services'] || []).each_with_index do |service, index| %>
                 <div class="service-item border p-3 mb-3">
+                  <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-action="remove-item">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
                   <div class="mb-2">
                     <%= text_field_tag "website_page[page_data][services][#{index}][name]",
                                        service['name'], placeholder: 'Service Name', class: 'form-control' %>
@@ -72,6 +76,9 @@
                 </div>
               <% end %>
             </div>
+            <button type="button" class="btn btn-outline-primary" data-action="add-service">
+              <i class="fas fa-plus"></i> Add Service
+            </button>
 
           <% when 'contact' %>
             <div class="row">

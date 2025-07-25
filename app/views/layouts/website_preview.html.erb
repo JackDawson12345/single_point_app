@@ -131,7 +131,8 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
   <div class="container">
-    <%= link_to @website.site_name, preview_manage_website_path(@website), class: "navbar-brand" %>
+    <%= link_to @website.site_name, preview_website_path(@website), class: "navbar-brand" %>
+
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -142,7 +143,7 @@
         <% @website.website_pages.active.ordered.each do |page| %>
           <li class="nav-item">
             <%= link_to page.title,
-                        preview_manage_website_path(@website, page: page.page_type),
+                        preview_website_path(@website, page: page.page_type),
                         class: "nav-link #{'active' if @page_type == page.page_type}" %>
           </li>
         <% end %>

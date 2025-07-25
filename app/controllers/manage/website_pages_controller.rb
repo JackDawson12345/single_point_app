@@ -11,7 +11,7 @@ class Manage::WebsitePagesController < Manage::BaseController
 
   def update
     if @page.update(page_params)
-      redirect_to manage_website_path(@website),
+      redirect_to website_path(@website),
                   notice: "#{@page.page_type.humanize} page updated successfully!"
     else
       render :edit
@@ -22,7 +22,7 @@ class Manage::WebsitePagesController < Manage::BaseController
 
   def set_website
     @website = current_user.website
-    redirect_to new_manage_website_path unless @website
+    redirect_to new_website_path unless @website
   end
 
   def set_page
