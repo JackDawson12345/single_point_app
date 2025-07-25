@@ -17,7 +17,7 @@ class Admin::ThemesController < Admin::BaseController
     @theme = Theme.new(theme_params)
 
     if @theme.save
-      redirect_to admin_theme_path(@theme), notice: 'Theme created successfully.'
+      redirect_to theme_path(@theme), notice: 'Theme created successfully.'
     else
       render :new
     end
@@ -28,7 +28,7 @@ class Admin::ThemesController < Admin::BaseController
 
   def update
     if @theme.update(theme_params)
-      redirect_to admin_theme_path(@theme), notice: 'Theme updated successfully.'
+      redirect_to theme_path(@theme), notice: 'Theme updated successfully.'
     else
       render :edit
     end
@@ -36,10 +36,10 @@ class Admin::ThemesController < Admin::BaseController
 
   def destroy
     if @theme.websites.exists?
-      redirect_to admin_themes_path, alert: 'Cannot delete theme that is being used by websites.'
+      redirect_to themes_path, alert: 'Cannot delete theme that is being used by websites.'
     else
       @theme.destroy
-      redirect_to admin_themes_path, notice: 'Theme deleted successfully.'
+      redirect_to themes_path, notice: 'Theme deleted successfully.'
     end
   end
 

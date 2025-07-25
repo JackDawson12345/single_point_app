@@ -1,7 +1,8 @@
 <!-- app/views/admin/themes/new.html.erb -->
 <h1>Create New Theme</h1>
 
-<%= form_with model: [:admin, @theme], local: true, class: 'row g-3' do |form| %>
+<%= form_with model: @theme, local: true, class: 'row g-3' do |form| %>
+
   <% if @theme.errors.any? %>
     <div class="col-12">
       <div class="alert alert-danger">
@@ -53,6 +54,6 @@
 
   <div class="col-12">
     <%= form.submit 'Create Theme', class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', admin_themes_path, class: 'btn btn-secondary' %>
+    <%= link_to 'Cancel', themes_path, class: 'btn btn-secondary' %>
   </div>
 <% end %>

@@ -1,7 +1,7 @@
 <!-- app/views/admin/themes/edit.html.erb -->
 <h1>Edit Theme: <%= @theme.name %></h1>
 
-<%= form_with model: [:admin, @theme], local: true, class: 'row g-3' do |form| %>
+<%= form_with model: @theme, local: true, class: 'row g-3' do |form| %>
   <% if @theme.errors.any? %>
     <div class="col-12">
       <div class="alert alert-danger">
@@ -49,7 +49,7 @@
 
   <div class="col-12">
     <%= form.submit 'Update Theme', class: 'btn btn-primary' %>
-    <%= link_to 'View', admin_theme_path(@theme), class: 'btn btn-info' %>
-    <%= link_to 'Back', admin_themes_path, class: 'btn btn-secondary' %>
+    <%= link_to 'View', theme_path(@theme), class: 'btn btn-info' %>
+    <%= link_to 'Back', themes_path, class: 'btn btn-secondary' %>
   </div>
 <% end %>

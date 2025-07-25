@@ -46,6 +46,13 @@ Rails.application.routes.draw do
       resources :users
       resources :settings
       resources :system_logs, only: [:index, :show]
+
+      # Theme management for admins
+      resources :themes do
+        member do
+          patch :toggle_active
+        end
+      end
     end
   end
 end
