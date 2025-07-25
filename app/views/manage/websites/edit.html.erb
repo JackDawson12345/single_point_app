@@ -1,0 +1,133 @@
+<!-- app/views/manage/website_pages/edit.html.erb -->
+<h1>Edit <%= @page.title %> Page</h1>
+
+<%= form_with model: [:manage, @website, @page], local: true do |form| %>
+  <% if @page.errors.any? %>
+    <div class="alert alert-danger">
+      <h6>Please fix the following errors:</h6>
+      <ul class="mb-0">
+        <% @page.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-4">
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Page Content</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <%= form.label :title, class: 'form-label' %>
+            <%= form.text_field :title, class: 'form-control' %>
+          </div>
+
+          <% case @page.page_type %>
+          <% when 'home' %>
+            <h6>Hero Section</h6>
+            <div class="mb-3">
+              <%= label_tag 'page_data[hero_title]', 'Hero Title', class: 'form-label' %>
+              <%= text_field_tag 'website_page[page_data][hero_title]',
+                                 @page.merged_content['hero_title'], class: 'form-control' %>
+            </div>
+            <div class="mb-3">
+              <%= label_tag 'page_data[hero_subtitle]', 'Hero Subtitle', class: 'form-label' %>
+              <%= text_field_tag 'website_page[page_data][hero_subtitle]',
+                                 @page.merged_content['hero_subtitle'], class: 'form-control' %>
+            </div>
+            <div class="mb-3">
+              <%= label_tag 'page_data[hero_cta]', 'Call to Action Button Text', class: 'form-label' %>
+              <%= text_field_tag 'website_page[page_data][hero_cta]',
+                                 @page.merged_content['hero_cta'], class: 'form-control' %>
+            </div>
+
+          <% when 'about' %>
+            <div class="mb-3">
+              <%= label_tag 'page_data[content]', 'About Content', class: 'form-label' %>
+              <%= text_area_tag 'website_page[page_data][content]',
+                                @page.merged_content['content'], rows: 8, class: 'form-control' %>
+            </div>
+
+          <% when 'services' %>
+            <h6>Services</h6>
+            <div id="services-container">
+              <% (@page.merged_content['services'] || []).each_with_index do |service, index| %>
+                <div class="service-item border p-3 mb-3">
+                  <div class="mb-2">
+                    <%= text_field_tag "website_page[page_data][services][#{index}][name]",
+                                       service['name'], placeholder: 'Service Name', class: 'form-control' %>
+                  </div>
+                  <div class="mb-2">
+                    <%= text_area_tag "website_page[page_data][services][#{index}][description]",
+                                      service['description'], placeholder: 'Service Description',
+                                      rows: 3, class: 'form-control' %>
+                  </div>
+                  <div class="mb-2">
+                    <%= text_field_tag "website_page[page_data][services][#{index}][price]",
+                                       service['price'], placeholder: 'Price', class: 'form-control' %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+          <% when 'contact' %>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= label_tag 'page_data[address]', 'Address', class: 'form-label' %>
+                  <%= text_area_tag 'website_page[page_data][address]',
+                                    @page.merged_content['address'], rows: 3, class: 'form-control' %>
+                </div>
+                <div class="mb-3">
+                  <%= label_tag 'page_data[phone]', 'Phone', class: 'form-label' %>
+                  <%= text_field_tag 'website_page[page_data][phone]',
+                                     @page.merged_content['phone'], class: 'form-control' %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <%= label_tag 'page_data[email]', 'Email', class: 'form-label' %>
+                  <%= email_field_tag 'website_page[page_data][email]',
+                                      @page.merged_content['email'], class: 'form-control' %>
+                </div>
+                <div class="mb-3">
+                  <%= label_tag 'page_data[hours]', 'Business Hours', class: 'form-label' %>
+                  <%= text_field_tag 'website_page[page_data][hours]',
+                                     @page.merged_content['hours'], class: 'form-control' %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Page Settings</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-check mb-3">
+            <%= form.check_box :active, class: 'form-check-input' %>
+            <%= form.label :active, 'Page Active', class: 'form-check-label' %>
+          </div>
+
+          <div class="d-grid gap-2">
+            <%= link_to 'Preview Page',
+                        preview_manage_website_path(@website, page: @page.page_type),
+                        class: 'btn btn-info btn-sm', target: '_blank' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= form.submit 'Update Page', class: 'btn btn-primary' %>
+    <%= link_to 'Back to Website', manage_website_path(@website), class: 'btn btn-secondary' %>
+  </div>
+<% end %>

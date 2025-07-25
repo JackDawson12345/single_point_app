@@ -1,0 +1,28 @@
+<!-- app/views/manage/websites/_services_preview.html.erb -->
+<% content = @page.merged_content %>
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-12">
+        <h1><%= content['title'] %></h1>
+        <p class="lead">Professional services tailored to your needs</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <% (content['services'] || []).each do |service| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card service-card h-100">
+            <div class="card-body">
+              <h4 class="card-title"><%= service['name'] %></h4>
+              <div class="service-price mb-3"><%= service['price'] %></div>
+              <p class="card-text"><%= service['description'] %></p>
+              <a href="#contact" class="btn btn-outline-primary">Learn More</a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

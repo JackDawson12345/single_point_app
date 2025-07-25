@@ -1,0 +1,170 @@
+<!-- app/views/layouts/website_preview.html.erb -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @website.site_name %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS with theme variables -->
+  <style>
+      :root {
+      <% @website.customizations_for_css.each do |variable, value| %>
+          --<%= variable.gsub('_', '-') %>: <%= value %>;
+      <% end %>
+      }
+
+      /* Base theme styles */
+      body {
+          font-family: var(--font-family, 'Arial, sans-serif');
+          color: var(--text-color, '#333');
+          background-color: var(--background-color, '#fff');
+      }
+
+      .hero-section {
+          background: linear-gradient(135deg, var(--primary-color, '#007bff'), var(--secondary-color, '#6c757d'));
+          color: white;
+          padding: 100px 0;
+          text-align: center;
+      }
+
+      .hero-title {
+          font-size: 3.5rem;
+          font-weight: bold;
+          margin-bottom: 1rem;
+      }
+
+      .hero-subtitle {
+          font-size: 1.25rem;
+          margin-bottom: 2rem;
+          opacity: 0.9;
+      }
+
+      .btn-hero {
+          background-color: var(--accent-color, '#28a745');
+          border-color: var(--accent-color, '#28a745');
+          color: white;
+          padding: 12px 30px;
+          font-size: 1.1rem;
+          border-radius: 50px;
+      }
+
+      .btn-hero:hover {
+          background-color: var(--accent-hover-color, '#218838');
+          border-color: var(--accent-hover-color, '#218838');
+          color: white;
+      }
+
+      .navbar {
+          background-color: var(--navbar-bg, '#fff') !important;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .navbar-brand {
+          color: var(--primary-color, '#007bff') !important;
+          font-weight: bold;
+          font-size: 1.5rem;
+      }
+
+      .nav-link {
+          color: var(--text-color, '#333') !important;
+          font-weight: 500;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+          color: var(--primary-color, '#007bff') !important;
+      }
+
+      .section-padding {
+          padding: 80px 0;
+      }
+
+      .card {
+          border: none;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          transition: transform 0.3s ease;
+      }
+
+      .card:hover {
+          transform: translateY(-5px);
+      }
+
+      .feature-icon {
+          width: 60px;
+          height: 60px;
+          background: var(--primary-color, '#007bff');
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 1rem;
+          color: white;
+          font-size: 1.5rem;
+      }
+
+      .footer {
+          background-color: var(--footer-bg, '#333');
+          color: var(--footer-text, '#fff');
+          padding: 40px 0;
+          margin-top: 60px;
+      }
+
+      .service-card {
+          text-align: center;
+          padding: 2rem;
+          height: 100%;
+      }
+
+      .service-price {
+          font-size: 2rem;
+          font-weight: bold;
+          color: var(--primary-color, '#007bff');
+      }
+  </style>
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container">
+    <%= link_to @website.site_name, preview_manage_website_path(@website), class: "navbar-brand" %>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <% @website.website_pages.active.ordered.each do |page| %>
+          <li class="nav-item">
+            <%= link_to page.title,
+                        preview_manage_website_path(@website, page: page.page_type),
+                        class: "nav-link #{'active' if @page_type == page.page_type}" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main style="padding-top: 76px;">
+  <%= yield %>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container text-center">
+    <p>&copy; <%= Date.current.year %> <%= @website.site_name %>. All rights reserved.</p>
+    <small class="text-muted">Built with SinglePoint Website Builder</small>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,4 +1,221 @@
 <!-- app/views/manage/dashboard/index.html.erb -->
-<h1>Manager Dashboard</h1>
-<p>Welcome! You are logged in as: <%= current_user.email %></p>
-<p>Admin status: <%= current_user.admin? %></p>
+<div class="row mb-4">
+  <div class="col-12">
+    <h1>Welcome to Your Dashboard</h1>
+    <p class="text-muted">Manage your website and account settings</p>
+  </div>
+</div>
+
+<% if current_user.has_website? %>
+  <!-- User has a website -->
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Your Website</h5>
+          <%= website_status_badge(current_user.website) %>
+        </div>
+        <div class="card-body">
+          <h4><%= current_user.website.site_name %></h4>
+          <p class="text-muted mb-3">
+            Theme: <%= current_user.website.theme.name %> |
+            Last updated: <%= current_user.website.updated_at.strftime('%B %d, %Y') %>
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <%= link_to 'Edit Website', manage_website_path(current_user.website),
+                          class: 'btn btn-primary btn-lg w-100' %>
+            </div>
+            <div class="col-md-6">
+              <%= link_to 'Preview Website', preview_manage_website_path(current_user.website),
+                          class: 'btn btn-info btn-lg w-100', target: '_blank' %>
+            </div>
+          </div>
+
+          <hr>
+
+          <h6>Quick Actions</h6>
+          <div class="row g-2">
+            <div class="col-6 col-md-3">
+              <%= link_to customize_manage_websites_path, class: 'btn btn-outline-secondary btn-sm w-100' do %>
+                <i class="fas fa-palette"></i> Customize
+              <% end %>
+            </div>
+            <div class="col-6 col-md-3">
+              <%= link_to publish_manage_website_path(current_user.website),
+                          method: :patch, class: 'btn btn-outline-success btn-sm w-100' do %>
+                <i class="fas fa-globe"></i>
+                <%= current_user.website.published? ? 'Unpublish' : 'Publish' %>
+              <% end %>
+            </div>
+            <div class="col-6 col-md-3">
+              <%= link_to edit_manage_website_path(current_user.website),
+                          class: 'btn btn-outline-primary btn-sm w-100' do %>
+                <i class="fas fa-cog"></i> Settings
+              <% end %>
+            </div>
+            <div class="col-6 col-md-3">
+              <%= link_to current_user.website.preview_url,
+                          class: 'btn btn-outline-info btn-sm w-100', target: '_blank' do %>
+                <i class="fas fa-external-link-alt"></i> Live Site
+              <% end if current_user.website.published? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="mb-0">Website Pages</h6>
+        </div>
+        <div class="card-body">
+          <% current_user.website.website_pages.active.ordered.each do |page| %>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex align-items-center">
+                <%= page_type_icon(page.page_type) %>
+                <span class="ms-2"><%= page.title %></span>
+              </div>
+              <%= link_to 'Edit', edit_manage_website_page_path(current_user.website, page),
+                          class: 'btn btn-sm btn-outline-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Website Stats</h6>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-6">
+              <h4><%= current_user.website.website_pages.active.count %></h4>
+              <small class="text-muted">Active Pages</small>
+            </div>
+            <div class="col-6">
+              <h4><%= current_user.website.created_at.strftime('%b %Y') %></h4>
+              <small class="text-muted">Created</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <!-- User doesn't have a website -->
+  <div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+      <div class="card">
+        <div class="card-body py-5">
+          <i class="fas fa-globe fa-4x text-primary mb-4"></i>
+          <h2>Create Your Website</h2>
+          <p class="lead mb-4">
+            Build a professional website in minutes with our easy-to-use website builder.
+            Choose from beautiful themes and customize everything to match your brand.
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="text-center">
+                <i class="fas fa-palette fa-2x text-info mb-2"></i>
+                <h6>Choose Theme</h6>
+                <small class="text-muted">Select from professional templates</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center">
+                <i class="fas fa-edit fa-2x text-warning mb-2"></i>
+                <h6>Customize Content</h6>
+                <small class="text-muted">Add your text, images, and information</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center">
+                <i class="fas fa-rocket fa-2x text-success mb-2"></i>
+                <h6>Publish Online</h6>
+                <small class="text-muted">Share your website with the world</small>
+              </div>
+            </div>
+          </div>
+
+          <%= link_to 'Create Your Website', new_manage_website_path,
+                      class: 'btn btn-primary btn-lg' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<!-- Recent Activity or Tips Section -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="mb-0">
+          <% if current_user.has_website? %>
+            Website Tips
+          <% else %>
+            Getting Started
+          <% end %>
+        </h6>
+      </div>
+      <div class="card-body">
+        <% if current_user.has_website? %>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="d-flex">
+                <i class="fas fa-lightbulb text-warning me-3 mt-1"></i>
+                <div>
+                  <h6>SEO Tips</h6>
+                  <small class="text-muted">Optimize your page titles and descriptions for better search rankings.</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex">
+                <i class="fas fa-mobile-alt text-info me-3 mt-1"></i>
+                <div>
+                  <h6>Mobile Friendly</h6>
+                  <small class="text-muted">Your website automatically adapts to all screen sizes.</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex">
+                <i class="fas fa-share-alt text-success me-3 mt-1"></i>
+                <div>
+                  <h6>Share Your Site</h6>
+                  <small class="text-muted">Copy your website URL and share it on social media.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="d-flex">
+                <i class="fas fa-question-circle text-primary me-3 mt-1"></i>
+                <div>
+                  <h6>What can I create?</h6>
+                  <small class="text-muted">Build business websites, portfolios, landing pages, and more with our flexible themes.</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <i class="fas fa-clock text-info me-3 mt-1"></i>
+                <div>
+                  <h6>How long does it take?</h6>
+                  <small class="text-muted">Most users have their website ready in under 30 minutes!</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<!-- app/views/manage/websites/_contact_preview.html.erb -->
+<% content = @page.merged_content %>
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-12">
+        <h1><%= content['title'] %></h1>
+        <p class="lead">Get in touch with us</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body text-center">
+                <i class="fas fa-map-marker-alt fa-2x text-primary mb-3"></i>
+                <h5>Address</h5>
+                <p><%= simple_format(content['address']) %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body text-center">
+                <i class="fas fa-phone fa-2x text-primary mb-3"></i>
+                <h5>Phone</h5>
+                <p><a href="tel:<%= content['phone'] %>"><%= content['phone'] %></a></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body text-center">
+                <i class="fas fa-envelope fa-2x text-primary mb-3"></i>
+                <h5>Email</h5>
+                <p><a href="mailto:<%= content['email'] %>"><%= content['email'] %></a></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="card-body text-center">
+                <i class="fas fa-clock fa-2x text-primary mb-3"></i>
+                <h5>Hours</h5>
+                <p><%= content['hours'] %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

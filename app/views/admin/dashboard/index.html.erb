@@ -1,1 +1,121 @@
-test
+<!-- app/views/admin/dashboard/index.html.erb -->
+<div class="row mb-4">
+  <div class="col-12">
+    <h1>Admin Dashboard</h1>
+    <p class="text-muted">System overview and management</p>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+        <h3><%= @total_users %></h3>
+        <p class="card-text text-muted">Total Users</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-user-shield fa-2x text-warning mb-2"></i>
+        <h3><%= @admin_users %></h3>
+        <p class="card-text text-muted">Admin Users</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-globe fa-2x text-success mb-2"></i>
+        <h3><%= Website.count %></h3>
+        <p class="card-text text-muted">Total Websites</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <i class="fas fa-palette fa-2x text-info mb-2"></i>
+        <h3><%= Theme.active.count %></h3>
+        <p class="card-text text-muted">Active Themes</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Recent Websites</h5>
+        <%= link_to 'View All Users', admin_users_path, class: 'btn btn-sm btn-outline-primary' %>
+      </div>
+      <div class="card-body">
+        <% recent_websites = Website.includes(:user, :theme).order(created_at: :desc).limit(5) %>
+        <% if recent_websites.any? %>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+              <tr>
+                <th>Site Name</th>
+                <th>Owner</th>
+                <th>Theme</th>
+                <th>Status</th>
+                <th>Created</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% recent_websites.each do |website| %>
+                <tr>
+                  <td><%= website.site_name %></td>
+                  <td><%= website.user.email %></td>
+                  <td><%= website.theme.name %></td>
+                  <td>
+                      <span class="badge <%= website.published? ? 'bg-success' : 'bg-warning' %>">
+                        <%= website.published? ? 'Published' : 'Draft' %>
+                      </span>
+                  </td>
+                  <td><%= website.created_at.strftime('%b %d') %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <p class="text-muted text-center py-3">No websites created yet</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">Quick Actions</h6>
+      </div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <%= link_to 'Manage Themes', admin_themes_path, class: 'btn btn-primary' %>
+          <%= link_to 'User Management', admin_users_path, class: 'btn btn-outline-secondary' %>
+          <%= link_to 'System Settings', admin_settings_path, class: 'btn btn-outline-info' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h6 class="mb-0">Theme Usage</h6>
+      </div>
+      <div class="card-body">
+        <% Theme.active.includes(:websites).each do |theme| %>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span><%= theme.name %></span>
+            <span class="badge bg-primary"><%= theme.websites.count %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<!-- app/views/manage/websites/_home_preview.html.erb -->
+<% content = @page.merged_content %>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <h1 class="hero-title"><%= content['hero_title'] %></h1>
+    <p class="hero-subtitle"><%= content['hero_subtitle'] %></p>
+    <a href="#features" class="btn btn-hero btn-lg"><%= content['hero_cta'] %></a>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="section-padding">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-lg-12">
+        <h2>Our Features</h2>
+        <p class="lead">Discover what makes us special</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <% (content['features'] || []).each_with_index do |feature, index| %>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="feature-icon">
+                <i class="fas fa-star"></i>
+              </div>
+              <h5 class="card-title"><%= feature['title'] %></h5>
+              <p class="card-text"><%= feature['description'] %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,6 @@
+<!-- app/views/manage/websites/index.html.erb -->
+<% if current_user.website %>
+  <% redirect_to manage_website_path(current_user.website) %>
+<% else %>
+  <% redirect_to new_manage_website_path %>
+<% end %>

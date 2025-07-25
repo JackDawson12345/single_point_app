@@ -1,0 +1,40 @@
+<!-- app/views/manage/websites/_about_preview.html.erb -->
+<% content = @page.merged_content %>
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1><%= content['title'] %></h1>
+        <hr class="my-4">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <div class="lead">
+          <%= simple_format(content['content']) %>
+        </div>
+      </div>
+    </div>
+
+    <% if content['team_members']&.any? %>
+      <div class="row mt-5">
+        <div class="col-12 text-center mb-4">
+          <h3>Our Team</h3>
+        </div>
+        <% content['team_members'].each do |member| %>
+          <div class="col-md-4 mb-4">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title"><%= member['name'] %></h5>
+                <p class="card-text text-muted"><%= member['position'] %></p>
+                <p class="card-text"><%= member['bio'] %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>

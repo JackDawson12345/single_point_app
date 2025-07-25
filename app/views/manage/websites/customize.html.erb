@@ -1,0 +1,65 @@
+<!-- app/views/manage/websites/customize.html.erb -->
+<h1>Customize Your Website</h1>
+<p class="text-muted mb-4">Adjust colors, fonts, and other styling options for your website.</p>
+
+<%= form_with url: update_customizations_manage_websites_path, method: :patch, local: true do |form| %>
+  <div class="row g-4">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Theme Customization</h5>
+        </div>
+        <div class="card-body">
+          <% @css_variables.each do |variable, default_value| %>
+            <div class="mb-3">
+              <%= label_tag "customizations[#{variable}]", variable.humanize, class: 'form-label' %>
+              <% if variable.include?('color') %>
+                <%= color_field_tag "customizations[#{variable}]",
+                                    @customizations[variable] || default_value,
+                                    class: 'form-control form-control-color' %>
+              <% elsif variable.include?('font') %>
+                <%= select_tag "customizations[#{variable}]",
+                               options_for_select([
+                                                    ['Arial', 'Arial, sans-serif'],
+                                                    ['Georgia', 'Georgia, serif'],
+                                                    ['Times New Roman', 'Times New Roman, serif'],
+                                                    ['Helvetica', 'Helvetica, sans-serif'],
+                                                    ['Roboto', 'Roboto, sans-serif']
+                                                  ], @customizations[variable] || default_value),
+                               class: 'form-control' %>
+              <% else %>
+                <%= text_field_tag "customizations[#{variable}]",
+                                   @customizations[variable] || default_value,
+                                   class: 'form-control' %>
+              <% end %>
+              <div class="form-text">Default: <%= default_value %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Preview</h5>
+        </div>
+        <div class="card-body">
+          <div class="text-center">
+            <%= link_to 'Open Preview', preview_manage_website_path(@website),
+                        class: 'btn btn-info', target: '_blank' %>
+          </div>
+          <hr>
+          <small class="text-muted">
+            Changes will be applied immediately. Use the preview link to see your website with the new customizations.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= form.submit 'Save Customizations', class: 'btn btn-primary' %>
+    <%= link_to 'Back to Website', manage_website_path(@website), class: 'btn btn-secondary' %>
+  </div>
+<% end %>

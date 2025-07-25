@@ -1,0 +1,60 @@
+<!-- app/views/admin/themes/index.html.erb -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Website Themes</h1>
+  <%= link_to 'New Theme', new_admin_theme_path, class: 'btn btn-primary' %>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <% if @themes.any? %>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Websites Using</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @themes.each do |theme| %>
+            <tr>
+              <td>
+                <strong><%= theme.name %></strong>
+              </td>
+              <td><%= truncate(theme.description, length: 100) %></td>
+              <td>
+                  <span class="badge <%= theme.active? ? 'bg-success' : 'bg-secondary' %>">
+                    <%= theme.active? ? 'Active' : 'Inactive' %>
+                  </span>
+              </td>
+              <td>
+                <span class="badge bg-info"><%= theme.websites.count %></span>
+              </td>
+              <td><%= theme.created_at.strftime('%b %d, %Y') %></td>
+              <td>
+                <%= link_to 'View', admin_theme_path(theme), class: 'btn btn-sm btn-outline-primary' %>
+                <%= link_to 'Edit', edit_admin_theme_path(theme), class: 'btn btn-sm btn-outline-secondary' %>
+                <% if theme.websites.empty? %>
+                  <%= link_to 'Delete', admin_theme_path(theme), method: :delete,
+                              class: 'btn btn-sm btn-outline-danger',
+                              data: { confirm: 'Are you sure?' } %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-5">
+        <h5>No themes created yet</h5>
+        <p class="text-muted">Create your first website theme to get started.</p>
+        <%= link_to 'Create Theme', new_admin_theme_path, class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

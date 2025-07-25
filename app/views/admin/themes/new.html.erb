@@ -1,0 +1,58 @@
+<!-- app/views/admin/themes/new.html.erb -->
+<h1>Create New Theme</h1>
+
+<%= form_with model: [:admin, @theme], local: true, class: 'row g-3' do |form| %>
+  <% if @theme.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <h6>Please fix the following errors:</h6>
+        <ul class="mb-0">
+          <% @theme.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-6">
+    <%= form.label :name, class: 'form-label' %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :preview_image, 'Preview Image URL', class: 'form-label' %>
+    <%= form.url_field :preview_image, class: 'form-control' %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :description, class: 'form-label' %>
+    <%= form.text_area :description, rows: 3, class: 'form-control' %>
+  </div>
+
+  <div class="col-12">
+    <div class="form-check">
+      <%= form.check_box :active, class: 'form-check-input' %>
+      <%= form.label :active, 'Active', class: 'form-check-label' %>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <h5>CSS Variables</h5>
+    <p class="text-muted">Define customizable CSS variables (JSON format)</p>
+    <%= form.text_area :css_variables, rows: 8, class: 'form-control',
+                       placeholder: '{"primary_color": "#007bff", "font_family": "Arial, sans-serif"}' %>
+  </div>
+
+  <div class="col-12">
+    <h5>Template Files</h5>
+    <p class="text-muted">Define HTML templates for each page type (JSON format)</p>
+    <%= form.text_area :template_files, rows: 12, class: 'form-control',
+                       placeholder: '{"home": "<html>...</html>", "about": "<html>...</html>"}' %>
+  </div>
+
+  <div class="col-12">
+    <%= form.submit 'Create Theme', class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', admin_themes_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>

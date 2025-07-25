@@ -1,0 +1,66 @@
+<!-- app/views/manage/websites/new.html.erb -->
+<h1>Create Your Website</h1>
+
+<%= form_with model: [:manage, @website], local: true, class: 'row g-4' do |form| %>
+  <% if @website.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger">
+        <h6>Please fix the following errors:</h6>
+        <ul class="mb-0">
+          <% @website.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-8">
+    <%= form.label :site_name, 'Website Name', class: 'form-label' %>
+    <%= form.text_field :site_name, class: 'form-control', placeholder: 'My Awesome Website' %>
+    <div class="form-text">This will be displayed as your website's title</div>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :theme_id, 'Choose a Theme', class: 'form-label' %>
+    <div class="row g-3">
+      <% @themes.each do |theme| %>
+        <div class="col-md-4">
+          <div class="card theme-card">
+            <% if theme.preview_image.present? %>
+              <img src="<%= theme.preview_image %>" class="card-img-top" alt="<%= theme.name %>">
+            <% else %>
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <span class="text-muted">No Preview</span>
+              </div>
+            <% end %>
+            <div class="card-body text-center">
+              <h6 class="card-title"><%= theme.name %></h6>
+              <p class="card-text small"><%= truncate(theme.description, length: 80) %></p>
+              <div class="form-check">
+                <%= form.radio_button :theme_id, theme.id, class: 'form-check-input' %>
+                <%= form.label :theme_id, 'Select', class: 'form-check-label', value: theme.id %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <%= form.submit 'Create Website', class: 'btn btn-primary btn-lg' %>
+    <%= link_to 'Cancel', manage_root_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>
+
+<style>
+    .theme-card {
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+    .theme-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>

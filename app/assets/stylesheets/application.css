@@ -1,16 +1,108 @@
-body {
+
+
+.website-builder {
+   min-height: 100vh;
+}
+
+.theme-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.theme-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: #007bff;
+}
+
+.theme-card.selected {
+    border-color: #007bff;
     background-color: #f8f9fa;
 }
 
-.navbar-brand {
+.theme-preview-placeholder {
+    height: 200px;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border: 2px dashed #dee2e6;
+}
+
+.theme-initials {
+    font-size: 2rem;
     font-weight: bold;
+    color: #6c757d;
 }
 
-.card {
-    border: none;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+.page-editor {
+    min-height: 500px;
 }
 
-.table {
-    background-color: white;
+.customization-panel {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.color-picker-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.website-preview-frame {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+.website-stats {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.page-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: #e9ecef;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.service-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    position: relative;
+}
+
+.service-item .btn-remove {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+.live-preview-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .theme-card {
+        margin-bottom: 1rem;
+    }
+
+    .website-preview-frame {
+        height: 400px;
+    }
 }
