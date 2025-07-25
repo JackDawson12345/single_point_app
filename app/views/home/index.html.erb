@@ -1,0 +1,37 @@
+<!-- app/views/home/index.html.erb -->
+<div class="row">
+  <div class="col-md-8">
+    <h1>Welcome to SinglePoint</h1>
+    <p class="lead">Your centralized management platform.</p>
+
+    <% if user_signed_in? %>
+      <div class="alert alert-info">
+        <h4>Redirecting you to your dashboard...</h4>
+        <p>Please wait while we take you to your appropriate workspace.</p>
+      </div>
+
+      <script>
+          // Fallback JavaScript redirect if cookie redirect doesn't work
+          setTimeout(function() {
+              <% if current_user.admin? %>
+              window.location.href = '<%= admin_root_url(subdomain: "admin") %>';
+              <% else %>
+              window.location.href = '<%= manage_root_url(subdomain: "manage") %>';
+              <% end %>
+          }, 2000);
+      </script>
+
+      <h3>Your Access Levels:</h3>
+      <ul>
+        <li>Main Site Access: ✓</li>
+        <% if current_user.admin? %>
+          <li>Admin Access: ✓</li>
+          <li>Manage Access: ✗ (Admins use Admin panel)</li>
+        <% else %>
+          <li>Admin Access: ✗</li>
+          <li>Manage Access: ✓</li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
